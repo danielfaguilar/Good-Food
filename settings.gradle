@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Good Food"
 include ':app'
+include ':logging'
