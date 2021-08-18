@@ -1,4 +1,12 @@
 package com.favorezapp.goodfood.common.domain.model.foodrecipe
 
-class ExtendedIngredient {
-}
+
+data class ExtendedIngredient(
+    val id: Int,
+    val amount: Double,
+    val consistency: String,
+    val image: String,
+    val name: String,
+    val original: String,
+    val unit: String
+)
