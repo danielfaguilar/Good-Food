@@ -1,4 +1,5 @@
 package com.favorezapp.goodfood.common.data.api.model.mappers
 
-class ApiMapper {
+interface ApiMapper<E, D> {
+    fun mapToDomain(entity: E): D
 }

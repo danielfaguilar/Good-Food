@@ -1,4 +1,5 @@
 package com.favorezapp.goodfood.common.data.api.model.mappers
 
-class MappingException {
-}
+import java.lang.Exception
+
+class MappingException(message: String): Exception(message)
