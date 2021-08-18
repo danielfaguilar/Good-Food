@@ -7,7 +7,7 @@ object Logger {
         Timber.DebugTree()
     }
 
-    init {
+    fun init() {
         Timber.plant(logger)
     }
 
