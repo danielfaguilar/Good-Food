@@ -1,4 +1,4 @@
-package com.favorezapp.goodfood.common.data.api
+package com.favorezapp.goodfood.common.data.api.util
 
 import android.content.Context
 import android.net.ConnectivityManager
