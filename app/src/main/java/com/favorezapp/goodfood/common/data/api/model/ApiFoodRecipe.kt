@@ -5,39 +5,41 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ApiResult(
+data class ApiFoodRecipe(
     @Json(name = "aggregateLikes")
-    val aggregateLikes: Int,
+    val aggregateLikes: Int?,
     @Json(name = "author")
-    val author: String,
+    val author: String?,
     @Json(name = "cheap")
-    val cheap: Boolean,
-    val cuisines: List<String>,
+    val cheap: Boolean?,
+    @Json(name = "cuisines")
+    val cuisines: List<String>?,
     @Json(name = "dairyFree")
-    val dairyFree: Boolean,
+    val dairyFree: Boolean?,
     @Json(name = "extendedIngredients")
-    val apiExtendedIngredients: List<ApiExtendedIngredient>,
+    val apiExtendedIngredients: List<ApiExtendedIngredient>?,
     @Json(name = "glutenFree")
-    val glutenFree: Boolean,
+    val glutenFree: Boolean?,
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
     @Json(name = "image")
-    val image: String,
-    val lowFodmap: Boolean,
+    val image: String?,
+    @Json(name = "lowFodmap")
+    val lowFodmap: Boolean?,
     @Json(name = "readyInMinutes")
-    val readyInMinutes: Int,
+    val readyInMinutes: Int?,
     @Json(name = "sourceName")
-    val sourceName: String,
+    val sourceName: String?,
     @Json(name = "sourceUrl")
-    val sourceUrl: String,
+    val sourceUrl: String?,
     @Json(name = "summary")
-    val summary: String,
+    val summary: String?,
     @Json(name = "title")
-    val title: String,
+    val title: String?,
     @Json(name = "vegan")
-    val vegan: Boolean,
+    val vegan: Boolean?,
     @Json(name = "vegetarian")
-    val vegetarian: Boolean,
+    val vegetarian: Boolean?,
     @Json(name = "veryHealthy")
-    val veryHealthy: Boolean
+    val veryHealthy: Boolean?
 )
