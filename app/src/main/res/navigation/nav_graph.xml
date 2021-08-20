@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/allFoodRecipesFragment">
 
+    <fragment
+        android:id="@+id/allFoodRecipesFragment"
+        android:name="com.favorezapp.goodfood.allrecipes.presentation.AllFoodRecipesFragment"
+        android:label="fragment_all_food_recipes"
+        tools:layout="@layout/fragment_all_food_recipes" />
+    <fragment
+        android:id="@+id/favoritesFoodRecipesFragment"
+        android:name="com.favorezapp.goodfood.favoritesrecipes.FavoritesFoodRecipesFragment"
+        android:label="fragment_favorites_food_recipes"
+        tools:layout="@layout/fragment_favorites_food_recipes" />
+    <fragment
+        android:id="@+id/foodJokeFragment"
+        android:name="com.favorezapp.goodfood.foodjoke.presentation.FoodJokeFragment"
+        android:label="FoodJokeFragment" />
 </navigation>
