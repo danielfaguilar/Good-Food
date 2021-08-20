@@ -1,4 +1,6 @@
 package com.favorezapp.goodfood.allrecipes.presentation
 
-class AllFoodRecipesEvents {
+sealed class AllFoodRecipesEvent {
+    object RequestInitialRecipes: AllFoodRecipesEvent()
+    object RequestMoreRecipes: AllFoodRecipesEvent()
 }
