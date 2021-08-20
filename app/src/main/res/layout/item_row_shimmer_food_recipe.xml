@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/image_view_recipe"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:background="@color/mediumGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/text_view_recipe_name"
+            android:layout_width="0dp"
+            android:background="@color/mediumGray"
+            android:layout_height="80dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view_recipe"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/text_view_brief_description"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/mediumGray"
+            app:layout_constraintEnd_toEndOf="@+id/text_view_recipe_name"
+            app:layout_constraintStart_toStartOf="@+id/text_view_recipe_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_recipe_name" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="49dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_view_brief_description"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_brief_description" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="49dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_brief_description"
+            tools:layout_editor_absoluteX="282dp" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="49dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_brief_description"
+            tools:layout_editor_absoluteX="346dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
