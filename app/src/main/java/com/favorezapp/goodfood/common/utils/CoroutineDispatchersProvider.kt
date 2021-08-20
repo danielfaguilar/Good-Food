@@ -1,4 +1,5 @@
 package com.favorezapp.goodfood.common.utils
 
-class CoroutineDispatchersProvider {
-}
+import javax.inject.Inject
+
+class CoroutineDispatchersProvider @Inject constructor(): DispatchersProvider

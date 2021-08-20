@@ -1,4 +1,8 @@
 package com.favorezapp.goodfood.common.utils
 
-interface DispatcherProvider {
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+
+interface DispatchersProvider {
+    fun io(): CoroutineDispatcher = Dispatchers.IO
 }
