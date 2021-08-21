@@ -2,6 +2,7 @@ package com.favorezapp.goodfood.common.data.di
 
 import com.favorezapp.goodfood.common.data.api.ApiConstants
 import com.favorezapp.goodfood.common.data.api.SpooncularApi
+import com.favorezapp.goodfood.common.data.api.interceptors.AuthenticationInterceptor
 import com.favorezapp.goodfood.common.data.api.interceptors.LoggingInterceptor
 import com.favorezapp.goodfood.common.data.api.interceptors.NetworkStatusInterceptor
 import dagger.Module
@@ -29,10 +30,12 @@ class ApiModule {
 
     @Provides
     fun provideOkHttpClient(
+        authenticationInterceptor: AuthenticationInterceptor,
         logging: HttpLoggingInterceptor,
         networkStatus: NetworkStatusInterceptor
     ) = OkHttpClient.Builder()
         .addInterceptor(networkStatus)
+        .addInterceptor(authenticationInterceptor)
         .addInterceptor(logging)
         .build()
 
