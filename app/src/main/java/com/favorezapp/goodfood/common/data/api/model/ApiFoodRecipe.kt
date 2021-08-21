@@ -21,7 +21,7 @@ data class ApiFoodRecipe(
     @Json(name = "glutenFree")
     val glutenFree: Boolean?,
     @Json(name = "id")
-    val id: Int?,
+    val id: Long?,
     @Json(name = "image")
     val image: String?,
     @Json(name = "lowFodmap")

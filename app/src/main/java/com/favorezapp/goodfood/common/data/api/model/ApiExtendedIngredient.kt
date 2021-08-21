@@ -11,7 +11,7 @@ data class ApiExtendedIngredient(
     @Json(name = "consistency")
     val consistency: String?,
     @Json(name = "id")
-    val id: Int?,
+    val id: Long?,
     @Json(name = "image")
     val image: String?,
     @Json(name = "name")
