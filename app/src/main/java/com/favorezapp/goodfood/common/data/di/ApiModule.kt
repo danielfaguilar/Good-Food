@@ -24,7 +24,9 @@ class ApiModule {
         logger: LoggingInterceptor
     ): HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor(logger)
+
         interceptor.level = HttpLoggingInterceptor.Level.BODY
+
         return interceptor
     }
 
@@ -58,7 +60,7 @@ class ApiModule {
     @Singleton
     fun providesApi(
         retrofit: Retrofit.Builder
-    ) = retrofit
+    ): SpooncularApi = retrofit
         .build()
         .create(SpooncularApi::class.java)
 }
