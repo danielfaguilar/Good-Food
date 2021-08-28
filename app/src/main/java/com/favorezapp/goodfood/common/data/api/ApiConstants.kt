@@ -11,4 +11,9 @@ object ApiConstants {
 
 object ApiParameters {
     const val KEY_QUERY = "apiKey"
+    const val NUMBER_QUERY = "number"
+    const val TYPE_QUERY = "type"
+    const val DIET_QUERY = "diet"
+    const val ADD_RECIPE_INFORMATION_QUERY = "addRecipeInformation"
+    const val FILL_INGREDIENTS_QUERY = "fillIngredients"
 }
