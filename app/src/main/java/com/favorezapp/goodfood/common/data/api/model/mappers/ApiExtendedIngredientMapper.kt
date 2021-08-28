@@ -2,8 +2,11 @@ package com.favorezapp.goodfood.common.data.api.model.mappers
 
 import com.favorezapp.goodfood.common.data.api.model.ApiExtendedIngredient
 import com.favorezapp.goodfood.common.domain.model.foodrecipe.ExtendedIngredient
+import javax.inject.Inject
 
-object ApiExtendedIngredientMapper: ApiMapper<ApiExtendedIngredient, ExtendedIngredient>{
+class ApiExtendedIngredientMapper @Inject constructor():
+    ApiMapper<ApiExtendedIngredient, ExtendedIngredient>{
+
     override fun mapToDomain(entity: ApiExtendedIngredient) =
         ExtendedIngredient(
             entity.id ?: throw MappingException("ID cannot be null"),
@@ -14,4 +17,5 @@ object ApiExtendedIngredientMapper: ApiMapper<ApiExtendedIngredient, ExtendedIng
             entity.original.orEmpty(),
             entity.unit.orEmpty()
         )
+
 }
