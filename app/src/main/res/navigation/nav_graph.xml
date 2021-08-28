@@ -18,5 +18,6 @@
     <fragment
         android:id="@+id/foodJokeFragment"
         android:name="com.favorezapp.goodfood.foodjoke.presentation.FoodJokeFragment"
-        android:label="FoodJokeFragment" />
+        android:label="FoodJokeFragment"
+        tools:layout="@layout/fragment_food_joke"/>
 </navigation>
