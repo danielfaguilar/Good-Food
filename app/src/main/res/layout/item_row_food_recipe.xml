@@ -10,6 +10,9 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        android:layout_margin="5dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -39,7 +42,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/courgette"
                 android:maxLines="2"
-                android:text="@{uiFoodRecipe.name}"
+                android:text="@{uiFoodRecipe.title}"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_view_recipe"
@@ -52,7 +55,7 @@
                 android:layout_marginTop="12dp"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:text="@{uiFoodRecipe.description}"
+                android:text="@{uiFoodRecipe.summary}"
                 app:layout_constraintEnd_toEndOf="@+id/text_view_recipe_name"
                 app:layout_constraintStart_toStartOf="@+id/text_view_recipe_name"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_recipe_name" />
@@ -114,7 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/vegan"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_view_ready_in_minutes"
                 app:layout_constraintTop_toBottomOf="@+id/image_view_vegan" />
         </androidx.constraintlayout.widget.ConstraintLayout>
