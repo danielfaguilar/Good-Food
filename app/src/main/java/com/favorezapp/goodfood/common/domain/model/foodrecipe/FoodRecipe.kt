@@ -7,7 +7,7 @@ data class FoodRecipe(
     val cheap: Boolean,
     val cuisines: List<String>,
     val dairyFree: Boolean,
-    val apiExtendedIngredients: List<ExtendedIngredient>,
+    val extendedIngredients: List<ExtendedIngredient>,
     val glutenFree: Boolean,
     val image: String,
     val lowFodmap: Boolean,
