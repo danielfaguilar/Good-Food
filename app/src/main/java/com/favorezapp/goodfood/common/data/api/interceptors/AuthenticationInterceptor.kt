@@ -11,9 +11,15 @@ class AuthenticationInterceptor @Inject constructor(): Interceptor {
         val originalRequest = chain.request()
         val originalHttpUrl = originalRequest.url
 
+        /* Modify harcoded parameters */
+
         val httpUrl = originalHttpUrl.newBuilder()
-            .addQueryParameter(ApiParameters.KEY_QUERY, ApiConstants.API_KEY)
+            .addQueryParameter(ApiParameters.KEY_PARAM, ApiConstants.API_KEY)
+            .addQueryParameter(ApiParameters.ADD_RECIPE_INFORMATION_QUERY, "true")
+            .addQueryParameter(ApiParameters.FILL_INGREDIENTS_QUERY, "true")
             .build()
+
+        /* Modify harcoded parameters */
 
         val requestBuilder = originalRequest.newBuilder()
             .url(httpUrl)
