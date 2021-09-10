@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Mi Cocina</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="vegan">Vegana</string>
+    <string name="recipes">Recetas</string>
+    <string name="favorites">Favoritas</string>
+    <string name="joke">Chiste</string>
+    <string name="an_error_occurred">Ocurrió un error</string>
+    <string name="meal_type">Tipo de platillo</string>
+    <string name="main_course">Plato principal</string>
+    <string name="diet_type">Dieta</string>
+    <string name="side_dish">Guarnición</string>
+    <string name="dessert">Postre</string>
+    <string name="appetizer">Aperitivo</string>
+    <string name="salad">Ensalada</string>
+    <string name="bread">Pan</string>
+    <string name="breakfast">Desayuno</string>
+    <string name="soup">Sopa</string>
+    <string name="beverage">Bebida</string>
+    <string name="sauce">Salsa</string>
+    <string name="marinade">Escabeche</string>
+    <string name="snack">Bocadillo</string>
+    <string name="drink">Bebida alcoholizada</string>
+    <string name="ketogenic">Cetogénico</string>
+    <string name="gluten_free">Libre de gluten</string>
+    <string name="paleo">Paleo</string>
+    <string name="whole30">Whole30</string>
+    <string name="search_recipe">Buscar receta</string>
+    <string name="filter_recipes">Filtrar recetas</string>
+
+    <!-- Fragment titles -->
+    <string name="title_overview">Visión general</string>
+    <string name="title_ingredients">Ingredientes</string>
+    <string name="title_more_details">Más Detalles</string>
+    <string name="vegetarian">Vegetariana</string>
+    <string name="dairy_free">Libre de lácteos</string>
+    <string name="healthy">Saludable</string>
+    <string name="cheap">Barata</string>
+    <string name="add_favorite">Agregar a favoritos</string>
+    <string name="add_this_recipe_to_favorites">Agregar ésta receta a favoritos</string>
+    <string name="no_recipes_found">Recetas no encontradas</string>
+    <string name="delete_recipe">Borrar receta</string>
+    <string name="added_to_favorites">Agregada a favoritos</string>
+    <string name="delete_all">Eliminar todo</string>
+    <string name="an_error_occurred_getting_joke">Ocurrió un error obteniendo el chiste</string>
+    <string name="share_joke">Compartir chiste</string>
+    <string name="get_recipes">Obtener recetas</string>
+    <string name="listen_overview">Escuchar descripción</string>
+    <string name="searching_recipe">Buscando receta…</string>
+    <string name="searching_recipes">Buscando recetas…</string>
+    <string name="no_internet_connection">No tienes conexión a internet</string>
+    <string name="verify_your_internet_connection">Verifique su conexión a internet</string>
+    <string name="main_image_recipe">Imagen de la receta</string>
+    <string name="ready_in_minutes_image">Listo en minutos imagen</string>
+    <string name="like_image">Imagen de me gusta</string>
+    <string name="speaking">Hablando…</string>
+    <string name="no_food_joke">No hay chiste de comida</string>
+    <string name="title_details">Detalles</string>
+    <string name="food_recipes">Recetas de cocina</string>
+    <string name="food_joke">Chiste sobre comida</string>
+    <string name="confirmation">Confirmación</string>
+    <string name="delete_all_favs_question">¿Estás usted seguro de eliminar todas las recetas favoritas?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="time_preparation">Tiempo de preparación</string>
+
+    <!-- Feature: allrecipes ViewPager -->
+    <string-array name="view_pager_fragment_titles">
+        <item>@string/title_overview</item>
+        <item>@string/title_ingredients</item>
+        <item>@string/title_more_details</item>
+    </string-array>
+</resources>
