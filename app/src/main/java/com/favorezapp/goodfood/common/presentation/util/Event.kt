@@ -1,4 +1,4 @@
-package com.favorezapp.goodfood.common.presentation
+package com.favorezapp.goodfood.common.presentation.util
 
 data class Event<out T>( private val content: T ) {
     private var hasBeenHandled = false
