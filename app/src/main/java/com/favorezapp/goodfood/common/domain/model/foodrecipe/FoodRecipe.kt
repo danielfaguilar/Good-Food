@@ -1,7 +1,7 @@
 package com.favorezapp.goodfood.common.domain.model.foodrecipe
 
 data class FoodRecipe(
-    val id: Long,
+    val id: Long?,
     val aggregateLikes: Int,
     val author: String,
     val cheap: Boolean,

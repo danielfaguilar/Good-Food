@@ -10,7 +10,7 @@ data class Pagination(
         // from the remote source. Total recipes should change with time, so we'll handle the value as
         // unknown before updating.
         const val UNKNOWN_TOTAL = -1
-        const val DEFAULT_NUM_OF_RECIPES = 5
+        const val DEFAULT_NUM_OF_RECIPES = 20
     }
 
     val canLoadMore: Boolean
