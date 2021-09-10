@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.favorezapp.goodfood"
-        minSdk 21
+        minSdk 23
         targetSdk 30
         versionCode 1
         versionName "1.0"
@@ -33,17 +34,17 @@ android {
 
     buildTypes {
         debug {
+            minifyEnabled false
             buildConfigField('String', "Key", SPOONCULAR_API_KEY)
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField('String', "Key", SPOONCULAR_API_KEY)
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -105,11 +106,11 @@ dependencies {
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.12.0'
 
     // Kotlin
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'com.todkars:shimmer-recyclerview:0.4.0'
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
@@ -119,9 +120,23 @@ dependencies {
 
     // Glide for load images
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     // RxJava and RxAndroid
     implementation "io.reactivex.rxjava2:rxjava:2.2.19"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+
+    // Data store
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // Lifecyle stuff (StateFlow)
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03'
+
+    // Lottie
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    // Gson for serialization
+    implementation 'com.google.code.gson:gson:2.8.8'
 }
