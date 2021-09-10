@@ -4,10 +4,10 @@ import androidx.room.Entity
 import androidx.room.Index
 
 @Entity(
-    primaryKeys = ["foodRecipeId", "ingredientId"],
-    indices = [Index("ingredientId")]
+    primaryKeys = ["title", "name"],
+    indices = [Index("name")]
 )
-class CachedRecipeIngredientCrossRef(
-    val foodRecipeId: Long,
-    val ingredientId: Long
+data class CachedRecipeIngredientCrossRef(
+    val title: String,
+    val name: String
 )

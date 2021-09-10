@@ -6,11 +6,11 @@ import com.favorezapp.goodfood.common.domain.model.foodrecipe.ExtendedIngredient
 
 @Entity(tableName = "extended_ingredient_table" )
 data class CachedExtendedIngredient(
-    @PrimaryKey( autoGenerate = false )
-    val ingredientId: Long,
+    val ingredientId: Long?,
     val amount: Double,
     val consistency: String,
     val image: String,
+    @PrimaryKey( autoGenerate = false )
     val name: String,
     val original: String,
     val unit: String

@@ -9,13 +9,13 @@ class CachedFoodRecipeAggregate(
     @Embedded
     val foodRecipe: CachedFoodRecipe,
     @Relation(
-        parentColumn = "foodRecipeId",
-        entityColumn = "ingredientId",
+        parentColumn = "title",
+        entityColumn = "name",
         associateBy = Junction(CachedRecipeIngredientCrossRef::class)
     )
     val extendedIngredients: List<CachedExtendedIngredient>,
     @Relation(
-        parentColumn = "foodRecipeId",
+        parentColumn = "title",
         entityColumn = "cuisine",
         associateBy = Junction(CachedFoodRecipeCuisineCrossRef::class)
     )

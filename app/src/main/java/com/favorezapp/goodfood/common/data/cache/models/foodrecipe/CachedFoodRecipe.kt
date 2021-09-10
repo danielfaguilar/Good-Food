@@ -7,8 +7,7 @@ import com.favorezapp.goodfood.common.domain.model.foodrecipe.FoodRecipe
 
 @Entity( tableName = "food_recipe_table" )
 data class CachedFoodRecipe(
-    @PrimaryKey(autoGenerate = false)
-    val foodRecipeId: Long,
+    val foodRecipeId: Long?,
     val aggregateLikes: Int,
     val author: String,
     val cheap: Boolean,
@@ -20,6 +19,7 @@ data class CachedFoodRecipe(
     val sourceName: String,
     val sourceUrl: String,
     val summary: String,
+    @PrimaryKey(autoGenerate = false)
     val title: String,
     val vegan: Boolean,
     val vegetarian: Boolean,
