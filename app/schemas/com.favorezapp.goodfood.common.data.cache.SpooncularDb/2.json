@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "4c5928c2c415aae98886de1eddf1f735",
+    "version": 2,
+    "identityHash": "9128df7e4f27f19b047ff51c11176a1a",
     "entities": [
       {
         "tableName": "cuisine_table",
@@ -26,13 +26,13 @@
       },
       {
         "tableName": "food_recipe_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodRecipeId` INTEGER NOT NULL, `aggregateLikes` INTEGER NOT NULL, `author` TEXT NOT NULL, `cheap` INTEGER NOT NULL, `dairyFree` INTEGER NOT NULL, `glutenFree` INTEGER NOT NULL, `image` TEXT NOT NULL, `lowFodmap` INTEGER NOT NULL, `readyInMinutes` INTEGER NOT NULL, `sourceName` TEXT NOT NULL, `sourceUrl` TEXT NOT NULL, `summary` TEXT NOT NULL, `title` TEXT NOT NULL, `vegan` INTEGER NOT NULL, `vegetarian` INTEGER NOT NULL, `veryHealthy` INTEGER NOT NULL, PRIMARY KEY(`foodRecipeId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodRecipeId` INTEGER, `aggregateLikes` INTEGER NOT NULL, `author` TEXT NOT NULL, `cheap` INTEGER NOT NULL, `dairyFree` INTEGER NOT NULL, `glutenFree` INTEGER NOT NULL, `image` TEXT NOT NULL, `lowFodmap` INTEGER NOT NULL, `readyInMinutes` INTEGER NOT NULL, `sourceName` TEXT NOT NULL, `sourceUrl` TEXT NOT NULL, `summary` TEXT NOT NULL, `title` TEXT NOT NULL, `vegan` INTEGER NOT NULL, `vegetarian` INTEGER NOT NULL, `veryHealthy` INTEGER NOT NULL, PRIMARY KEY(`title`))",
         "fields": [
           {
             "fieldPath": "foodRecipeId",
             "columnName": "foodRecipeId",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "aggregateLikes",
@@ -127,7 +127,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "foodRecipeId"
+            "title"
           ],
           "autoGenerate": false
         },
@@ -136,13 +136,13 @@
       },
       {
         "tableName": "extended_ingredient_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ingredientId` INTEGER NOT NULL, `amount` REAL NOT NULL, `consistency` TEXT NOT NULL, `image` TEXT NOT NULL, `name` TEXT NOT NULL, `original` TEXT NOT NULL, `unit` TEXT NOT NULL, PRIMARY KEY(`ingredientId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ingredientId` INTEGER, `amount` REAL NOT NULL, `consistency` TEXT NOT NULL, `image` TEXT NOT NULL, `name` TEXT NOT NULL, `original` TEXT NOT NULL, `unit` TEXT NOT NULL, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "ingredientId",
             "columnName": "ingredientId",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "amount",
@@ -183,7 +183,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "ingredientId"
+            "name"
           ],
           "autoGenerate": false
         },
@@ -192,39 +192,48 @@
       },
       {
         "tableName": "CachedRecipeIngredientCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodRecipeId` INTEGER NOT NULL, `ingredientId` INTEGER NOT NULL, PRIMARY KEY(`foodRecipeId`, `ingredientId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`title`, `name`))",
         "fields": [
           {
-            "fieldPath": "foodRecipeId",
-            "columnName": "foodRecipeId",
-            "affinity": "INTEGER",
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "ingredientId",
-            "columnName": "ingredientId",
-            "affinity": "INTEGER",
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "foodRecipeId",
-            "ingredientId"
+            "title",
+            "name"
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_CachedRecipeIngredientCrossRef_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_CachedRecipeIngredientCrossRef_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
         "tableName": "CachedFoodRecipeCuisineCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`foodRecipeId` INTEGER NOT NULL, `cuisine` TEXT NOT NULL, PRIMARY KEY(`foodRecipeId`, `cuisine`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `cuisine` TEXT NOT NULL, PRIMARY KEY(`title`, `cuisine`))",
         "fields": [
           {
-            "fieldPath": "foodRecipeId",
-            "columnName": "foodRecipeId",
-            "affinity": "INTEGER",
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -236,22 +245,31 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "foodRecipeId",
+            "title",
             "cuisine"
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_CachedFoodRecipeCuisineCrossRef_cuisine",
+            "unique": false,
+            "columnNames": [
+              "cuisine"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_CachedFoodRecipeCuisineCrossRef_cuisine` ON `${TABLE_NAME}` (`cuisine`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
         "tableName": "favorite_food_recipes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `foodRecipe` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `foodRecipe` TEXT NOT NULL, PRIMARY KEY(`title`))",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -263,7 +281,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "title"
           ],
           "autoGenerate": false
         },
@@ -294,7 +312,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4c5928c2c415aae98886de1eddf1f735')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9128df7e4f27f19b047ff51c11176a1a')"
     ]
   }
 }
