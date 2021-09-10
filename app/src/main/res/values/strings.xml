@@ -1,9 +1,100 @@
 <resources>
-    <string name="app_name">Good Food</string>
+    <string name="app_name">My Cuisine</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="vegan">Vegan</string>
     <string name="recipes">Recipes</string>
     <string name="favorites">Favorites</string>
     <string name="joke">Joke</string>
+    <string name="an_error_occurred">An error occurred</string>
+    <string name="meal_type">Meal Type</string>
+    <string name="main_course">Main course</string>
+    <string name="diet_type">Diet Type</string>
+    <string name="side_dish">Side dish</string>
+    <string name="dessert">Dessert</string>
+    <string name="appetizer">Appetizer</string>
+    <string name="salad">Salad</string>
+    <string name="bread">Bread</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="soup">Soup</string>
+    <string name="beverage">Beverage</string>
+    <string name="sauce">Sauce</string>
+    <string name="marinade">Marinade</string>
+    <string name="snack">Snack</string>
+    <string name="drink">Drink</string>
+    <string name="ketogenic">Ketogenic</string>
+    <string name="gluten_free">Gluten free</string>
+    <string name="paleo">Paleo</string>
+    <string name="whole30">Whole30</string>
+    <string name="search_recipe">Search recipe</string>
+    <string name="filter_recipes">Filter recipes</string>
+
+    <!-- Fragment titles -->
+    <string name="title_overview">Overview</string>
+    <string name="title_ingredients">Ingredients</string>
+    <string name="title_more_details">More Details</string>
+    <string name="vegetarian">Vegetarian</string>
+    <string name="dairy_free">Dairy Free</string>
+    <string name="healthy">Healthy</string>
+    <string name="cheap">Cheap</string>
+    <string name="add_favorite">Add favorite</string>
+    <string name="add_this_recipe_to_favorites">Add this recipe to favorites</string>
+    <string name="no_recipes_found">No recipes found</string>
+    <string name="delete_recipe">Delete recipe</string>
+    <string name="added_to_favorites">Added to favorites</string>
+    <string name="delete_all">Delete all</string>
+    <string name="an_error_occurred_getting_joke">An error occurred getting joke</string>
+    <string name="share_joke">Share joke</string>
+    <string name="get_recipes">Get Recipes</string>
+    <string name="listen_overview">Listen overview</string>
+    <string name="searching_recipe">Searching recipe</string>
+    <string name="searching_recipes">Searching recipes…</string>
+    <string name="no_internet_connection">You have no internet connection</string>
+    <string name="verify_your_internet_connection">Verify your internet connection</string>
+    <string name="main_image_recipe">Main image recipe</string>
+    <string name="ready_in_minutes_image">Ready in minutes image</string>
+    <string name="like_image">Like images</string>
+    <string name="speaking">Speaking…</string>
+    <string name="no_food_joke">No food joke</string>
+    <string name="title_details">Details</string>
+    <string name="food_recipes">Food recipes</string>
+    <string name="food_joke">Food Joke</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="delete_all_favs_question">Are you sure to delete all favorites?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="time_preparation">Time preparation</string>
+
+    <!-- Feature: allrecipes ViewPager -->
+    <string-array name="view_pager_fragment_titles">
+        <item>@string/title_overview</item>
+        <item>@string/title_ingredients</item>
+        <item>@string/title_more_details</item>
+    </string-array>
+
+
+    <!-- Diet types -->
+    <string name="diet_type_gluten_free" translatable="false">Gluten Free</string>
+    <string name="diet_type_ketogenic" translatable="false">Ketogenic</string>
+    <string name="diet_type_vegan" translatable="false">Vegan</string>
+    <string name="diet_type_paleo" translatable="false">Paleo</string>
+    <string name="diet_type_whole30" translatable="false">Whole30</string>
+    <!-- End Diet types -->
+
+    <!-- Meal types -->
+    <string name="meal_type_main_course" translatable="false">Main course</string>
+    <string name="meal_type_side_dish" translatable="false">Side dish</string>
+    <string name="meal_type_dessert" translatable="false">Dessert</string>
+    <string name="meal_type_appetizer" translatable="false">Appetizer</string>
+    <string name="meal_type_salad" translatable="false">Salad</string>
+    <string name="meal_type_bread" translatable="false">Bread</string>
+    <string name="meal_type_breakfast" translatable="false">Breakfast</string>
+    <string name="meal_type_soup" translatable="false">Soup</string>
+    <string name="meal_type_beverage" translatable="false">Beverage</string>
+    <string name="meal_type_sauce" translatable="false">Sauce</string>
+    <string name="meal_type_marinade" translatable="false">Marinade</string>
+    <string name="meal_type_snack" translatable="false">Snack</string>
+    <string name="meal_type_drink" translatable="false">Drink</string>
+    <!-- End Meal types -->
+
 </resources>

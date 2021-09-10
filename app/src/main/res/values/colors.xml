@@ -12,4 +12,40 @@
     <color name="yellowDark">#FF9800</color>
     <color name="mediumGray">#DDDDDD</color>
     <color name="green">#4CAF50</color>
+    <color name="lightGray">#F9F9F9</color>
+    <color name="lightMediumGray">#8A8A8A</color>
+    <color name="darkGray">#4B4B4B</color>
+
+    <!-- Bottom Sheet Chips Background -->
+    <color name="chip_checked_background_color">#206200EA</color>
+    <color name="chip_unchecked_background_color">@color/lightGray</color>
+
+    <!-- Bottom Sheet Chips Text Background -->
+    <color name="chip_checked_text_color">#806200EA</color>
+    <color name="chip_unchecked_text_color">@color/darkGray</color>
+
+
+    <!-- Bottom Sheet Chips Background -->
+    <color name="chip_checked_background_color_night">#80BB86FC</color>
+    <color name="chip_unchecked_background_color_night">@color/lightGray</color>
+
+    <!-- Bottom Sheet Chips Text Background -->
+    <color name="chip_checked_text_color_night">#FFBB86FC</color>
+    <color name="chip_unchecked_text_color_night">@color/darkGray</color>
+
+    <color name="action_bar_background_color">@color/design_default_color_primary</color>
+
+    <color name="stroke_color">@color/lightGray</color>
+    <color name="card_background_color">@color/white</color>
+    <color name="white_background">@color/white</color>
+    <color name="title_color">@color/black</color>
+
+
+    <!-- Action menu colors -->
+    <color name="status_bar_color">@color/purple_700</color>
+    <color name="status_bar_color_contextual">@color/black</color>
+    <color name="contextual_action_bar_color">@color/darkGray</color>
+
+    <color name="background_light_color">#106200EE</color>
+
 </resources>
