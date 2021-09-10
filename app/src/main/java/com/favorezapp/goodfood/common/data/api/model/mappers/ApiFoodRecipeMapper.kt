@@ -10,7 +10,7 @@ class ApiFoodRecipeMapper @Inject constructor(
 ): ApiMapper<ApiFoodRecipe, FoodRecipe> {
     override fun mapToDomain(entity: ApiFoodRecipe) =
         FoodRecipe(
-            entity.id ?: throw MappingException("Recipe ID cannot be null"),
+            entity.id,
             entity.aggregateLikes ?: 0,
             entity.author.orEmpty(),
             entity.cheap ?: false,

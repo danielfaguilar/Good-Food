@@ -9,7 +9,7 @@ class ApiExtendedIngredientMapper @Inject constructor():
 
     override fun mapToDomain(entity: ApiExtendedIngredient) =
         ExtendedIngredient(
-            entity.id ?: throw MappingException("ID cannot be null"),
+            entity.id,
             entity.amount ?: 0.0,
             entity.consistency.orEmpty(),
             entity.image.orEmpty(),
