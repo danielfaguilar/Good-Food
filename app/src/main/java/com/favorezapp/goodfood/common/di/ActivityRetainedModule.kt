@@ -9,6 +9,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import io.reactivex.disposables.CompositeDisposable
 
 @Module
@@ -16,7 +18,7 @@ import io.reactivex.disposables.CompositeDisposable
 abstract class ActivityRetainedModule {
 
     @Binds
-    @ActivityRetainedScope
+    @ActivityRetainedScoped
     abstract  fun bindsRepository( repo: SpooncularRecipesRepository ): RecipesRepository
 
     companion object {
