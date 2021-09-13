@@ -8,6 +8,8 @@ import com.squareup.moshi.JsonClass
 data class ApiFoodRecipe(
     @Json(name = "aggregateLikes")
     val aggregateLikes: Int?,
+    @Json(name = "analyzedInstructions")
+    val analyzedInstructions: List<ApiAnalyzedInstruction>?,
     @Json(name = "author")
     val author: String?,
     @Json(name = "cheap")
