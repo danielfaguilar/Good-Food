@@ -2,6 +2,8 @@ package com.favorezapp.goodfood.common.data.cache.models.foodrecipe
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.favorezapp.goodfood.common.data.cache.models.instructions.CachedAnalyzedInstruction
+import com.favorezapp.goodfood.common.domain.model.foodrecipe.AnalyzedInstructions
 import com.favorezapp.goodfood.common.domain.model.foodrecipe.ExtendedIngredient
 import com.favorezapp.goodfood.common.domain.model.foodrecipe.FoodRecipe
 
@@ -50,10 +52,14 @@ data class CachedFoodRecipe(
 
     fun toDomain(
         cuisines: List<CachedCuisine>,
-        extendedIngredients: List<CachedExtendedIngredient>
+        extendedIngredients: List<CachedExtendedIngredient>,
+        analyzedInstructions: List<CachedAnalyzedInstruction>
     ) = FoodRecipe(
         foodRecipeId,
         aggregateLikes,
+        analyzedInstructions = AnalyzedInstructions(
+            analyzedInstructions.map { it.toDomain() }
+        ),
         author,
         cheap,
         cuisines.map { it.cuisine },

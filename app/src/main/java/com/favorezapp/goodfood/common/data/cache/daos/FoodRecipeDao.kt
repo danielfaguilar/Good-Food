@@ -3,6 +3,8 @@ package com.favorezapp.goodfood.common.data.cache.daos
 import androidx.room.*
 import com.favorezapp.goodfood.common.data.cache.models.foodrecipe.*
 import com.favorezapp.goodfood.common.data.cache.models.foodrecipe.CachedFavoriteFoodRecipe
+import com.favorezapp.goodfood.common.data.cache.models.instructions.CachedAnalyzedInstruction
+import com.favorezapp.goodfood.common.domain.model.foodrecipe.AnalyzedInstructions
 import io.reactivex.Flowable
 
 @Dao
@@ -16,7 +18,8 @@ abstract class FoodRecipeDao {
     abstract suspend fun storeFoodRecipeAggregate(
         foodRecipe: CachedFoodRecipe,
         extendedIngredients: List<CachedExtendedIngredient>,
-        cuisines: List<CachedCuisine>
+        cuisines: List<CachedCuisine>,
+        analyzedInstructions: List<CachedAnalyzedInstruction>
     )
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -30,7 +33,8 @@ abstract class FoodRecipeDao {
             storeFoodRecipeAggregate(
                 recipe.foodRecipe,
                 recipe.extendedIngredients,
-                recipe.cuisines
+                recipe.cuisines,
+                recipe.analyzedInstructions
             )
             insertIngredient( recipe )
             insertCuisines( recipe )
@@ -73,8 +77,12 @@ abstract class FoodRecipeDao {
     suspend fun deleteAllRecipes() {
         deleteCachedRecipes()
         deleteCachedCuisines()
+        deleteAnalyzedInstructions()
         deleteCachedExtendedIngredient()
     }
+
+    @Query("DELETE FROM analyzed_instruction")
+    abstract suspend fun deleteAnalyzedInstructions()
 
     @Transaction
     @Query("SELECT * FROM food_recipe_table WHERE title IN (:title)")
