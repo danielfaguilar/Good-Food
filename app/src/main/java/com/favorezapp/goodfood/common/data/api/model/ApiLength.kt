@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ApiLength(
     @Json(name = "number")
-    val number: Int,
+    val number: Int?,
     @Json(name = "unit")
-    val unit: String
+    val unit: String?
 )

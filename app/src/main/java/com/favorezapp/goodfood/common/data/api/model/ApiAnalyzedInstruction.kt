@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ApiAnalyzedInstruction(
     @Json(name = "name")
-    val name: String,
+    val name: String?,
     @Json(name = "steps")
-    val steps: List<ApiStep>
+    val steps: List<ApiStep>?
 )
