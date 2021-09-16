@@ -7,12 +7,12 @@
         android:icon="@drawable/ic_menu_book"/>
 
     <item
-        android:id="@+id/favoritesFoodRecipesFragment"
+        android:id="@+id/favoritesRecipesFragment"
         android:title="@string/favorites"
         android:icon="@drawable/ic_star"/>
 
     <item
-        android:id="@+id/foodJokeFragment"
+        android:id="@+id/foodJokeFragment2"
         android:title="@string/joke"
         android:icon="@drawable/ic_emoji"/>
 </menu>

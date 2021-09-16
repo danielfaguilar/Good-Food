@@ -7,17 +7,53 @@
 
     <fragment
         android:id="@+id/allFoodRecipesFragment"
-        android:name="com.favorezapp.goodfood.allrecipes.presentation.AllFoodRecipesFragment"
-        android:label="fragment_all_food_recipes"
-        tools:layout="@layout/fragment_all_food_recipes" />
+        android:name="com.favorezapp.goodfood.allrecipes.presentation.AllRecipesFragment"
+        android:label="@string/food_recipes"
+        tools:layout="@layout/fragment_all_food_recipes" >
+        <action
+            android:id="@+id/action_allFoodRecipesFragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+        <action
+            android:id="@+id/action_allFoodRecipesFragment_to_bottomSheetFragment"
+            app:destination="@id/bottomSheetFragment" />
+        <argument
+            android:name="backFromBottomSheet"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_allFoodRecipesFragment_self"
+            app:destination="@id/allFoodRecipesFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/detailsActivity"
+        android:name="com.favorezapp.goodfood.common.details.presentation.DetailsActivity"
+        android:label="@string/title_details"
+        tools:layout="@layout/activity_details" >
+        <argument android:name="recipeTitle"
+            app:argType="string"
+            android:defaultValue='""' />
+    </activity>
+    <dialog
+        android:id="@+id/bottomSheetFragment"
+        android:name="com.favorezapp.goodfood.allrecipes.filterrecipes.presentation.BottomSheetFragment"
+        android:label="@string/filter_recipes">
+        <action
+            android:id="@+id/action_bottomSheetFragment_to_allFoodRecipesFragment"
+            app:destination="@id/allFoodRecipesFragment"
+            app:popUpTo="@id/allFoodRecipesFragment"
+            app:popUpToInclusive="true" />
+    </dialog>
     <fragment
-        android:id="@+id/favoritesFoodRecipesFragment"
-        android:name="com.favorezapp.goodfood.favoritesrecipes.FavoritesFoodRecipesFragment"
-        android:label="fragment_favorites_food_recipes"
-        tools:layout="@layout/fragment_favorites_food_recipes" />
+        android:id="@+id/favoritesRecipesFragment"
+        android:name="com.favorezapp.goodfood.favoritesrecipes.presentation.FavoritesRecipesFragment"
+        android:label="@string/favorites"
+        tools:layout="@layout/fragment_favorites_recipes" >
+        <action
+            android:id="@+id/action_favoritesRecipesFragment_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
     <fragment
-        android:id="@+id/foodJokeFragment"
+        android:id="@+id/foodJokeFragment2"
         android:name="com.favorezapp.goodfood.foodjoke.presentation.FoodJokeFragment"
-        android:label="FoodJokeFragment"
-        tools:layout="@layout/fragment_food_joke"/>
+        android:label="@string/food_joke" />
 </navigation>
