@@ -12,11 +12,6 @@ import android.net.NetworkInfo
 import android.content.Context.CONNECTIVITY_SERVICE
 
 
-
-
-
-
-
 class NetworkListener: ConnectivityManager.NetworkCallback() {
     private val isNetworkAvailable = MutableStateFlow( false )
 
