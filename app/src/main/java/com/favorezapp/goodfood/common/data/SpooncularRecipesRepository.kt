@@ -5,18 +5,19 @@ import com.favorezapp.goodfood.common.data.api.model.mappers.ApiFoodRecipeMapper
 import com.favorezapp.goodfood.common.data.cache.Cache
 import com.favorezapp.goodfood.common.data.cache.models.foodrecipe.CachedFoodRecipeAggregate
 import com.favorezapp.goodfood.common.domain.RecipesRepository
-import com.favorezapp.goodfood.common.domain.model.NoMoreRecipesException
 import com.favorezapp.goodfood.common.domain.model.foodrecipe.FoodRecipe
 import com.favorezapp.goodfood.common.domain.model.pagination.PaginatedFoodRecipes
 import com.favorezapp.goodfood.common.domain.model.pagination.Pagination
 import com.favorezapp.goodfood.allrecipes.filterrecipes.data.preferences.DataStorePreferences
 import com.favorezapp.goodfood.allrecipes.filterrecipes.domain.model.MealAndDietType
 import com.favorezapp.goodfood.common.data.cache.models.foodrecipe.CachedFavoriteFoodRecipe
+import com.favorezapp.goodfood.common.domain.model.network.NetworkResponseState
 import com.favorezapp.goodfood.foodjoke.data.api.model.mappers.ApiFoodJokeMapper
 import com.favorezapp.goodfood.foodjoke.data.cache.model.CachedFoodJoke
 import com.favorezapp.goodfood.foodjoke.domain.model.FoodJoke
 import io.reactivex.Flowable
 import kotlinx.coroutines.flow.*
+import java.io.IOException
 import java.lang.NullPointerException
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class SpooncularRecipesRepository @Inject constructor(
     private val apiFoodRecipeMapper: ApiFoodRecipeMapper,
     private val apiFoodJokeMapper: ApiFoodJokeMapper
 ): RecipesRepository {
-    override suspend fun requestMoreFoodRecipes(numOfItems: Int ): PaginatedFoodRecipes {
+    override suspend fun requestMoreFoodRecipes(numOfItems: Int): NetworkResponseState<PaginatedFoodRecipes> {
         val emptyParams = mapOf<String, String>()
 
         val mealAndDietType = preferences.getMealAndDietType().firstOrNull()
@@ -36,26 +37,31 @@ class SpooncularRecipesRepository @Inject constructor(
         val mealType = mealAndDietType.mealType
         val dietType = mealAndDietType.dietType
 
-        val (recipes, numOfRecipes, totalRecipes) = api
-            .getRecipesByParameters(
+        return try {
+            val response = api.getRecipesByParameters(
                 emptyParams,
                 numOfItems,
                 mealType.toString().lowercase().replace("_", " "),
                 dietType.toString().lowercase().replace("_", " ")
             )
+            if (response.isSuccessful)
+                if (response.body() != null) {
+                    val (recipes, numOfRecipes, totalRecipes) = response.body()!!
+                    val domainRecipes = recipes.orEmpty().map {
+                        apiFoodRecipeMapper.mapToDomain(it)
+                    }
+                    val paginatedFoodRecipes = PaginatedFoodRecipes(
+                        domainRecipes, Pagination(numOfRecipes ?: 0, totalRecipes ?: 0)
+                    )
+                    NetworkResponseState.Success(paginatedFoodRecipes)
+                } else
+                    NetworkResponseState.InvalidData()
+            else
+                getHttpError(response.code(), response.message())
 
-        if(recipes?.isEmpty() == true)
-            throw NoMoreRecipesException("No recipes available")
-
-        return PaginatedFoodRecipes(
-            recipes?.map {
-                apiFoodRecipeMapper.mapToDomain(it)
-            }.orEmpty(),
-            Pagination(
-                numOfRecipes ?: 0,
-                totalRecipes ?: 0
-            )
-        )
+        } catch (e: IOException) {
+            NetworkResponseState.NetworkException(e.message!!)
+        }
     }
 
     override suspend fun storeFoodRecipes(foodRecipes: List<FoodRecipe>) {
@@ -71,7 +77,11 @@ class SpooncularRecipesRepository @Inject constructor(
             .getFoodRecipes()
             .map { foodRecipeList ->
                 foodRecipeList.map {
-                    it.foodRecipe.toDomain(it.cuisines, it.extendedIngredients)
+                    it.foodRecipe.toDomain(
+                        it.cuisines,
+                        it.extendedIngredients,
+                        it.analyzedInstructions
+                    )
                 }
             }
     }
@@ -82,12 +92,14 @@ class SpooncularRecipesRepository @Inject constructor(
             .map {
                 it.foodRecipe.toDomain(
                     it.cuisines,
-                    it.extendedIngredients
+                    it.extendedIngredients,
+                    it.analyzedInstructions
                 )
             }
     }
 
-    override suspend fun searchAndGetRecipes(numOfItems: Int, query: String): PaginatedFoodRecipes {
+    override suspend fun searchAndGetRecipes(numOfItems: Int, query: String):
+            NetworkResponseState<PaginatedFoodRecipes> {
         val emptyParams = mapOf<String, String>()
 
         val mealAndDietType = preferences.getMealAndDietType().firstOrNull()
@@ -96,8 +108,8 @@ class SpooncularRecipesRepository @Inject constructor(
         val mealType = mealAndDietType.mealType
         val dietType = mealAndDietType.dietType
 
-        val (recipes, numOfRecipes, totalRecipes) = api
-            .searchRecipes(
+        return try {
+            val response = api.searchRecipes(
                 emptyParams,
                 numOfItems,
                 mealType.toString().lowercase().replace("_", " "),
@@ -105,17 +117,31 @@ class SpooncularRecipesRepository @Inject constructor(
                 query
             )
 
-        val domainRecipes = recipes?.map {
-            apiFoodRecipeMapper.mapToDomain( it )
-        }.orEmpty()
+            if (response.isSuccessful)
+                if (response.body() != null) {
+                    val (recipes, numOfRecipes, totalRecipes) = response.body()!!
 
-        return PaginatedFoodRecipes(
-            domainRecipes,
-            Pagination(
-                numOfRecipes ?: 0,
-                totalRecipes ?: 0
-            )
-        )
+                    val domainRecipes = recipes.orEmpty().map {
+                        apiFoodRecipeMapper.mapToDomain(it)
+                    }
+
+                    val paginatedRecipes = PaginatedFoodRecipes(
+                        domainRecipes,
+                        Pagination(
+                            numOfRecipes ?: 0,
+                            totalRecipes ?: 0
+                        )
+                    )
+
+                    NetworkResponseState.Success(paginatedRecipes)
+                } else
+                    NetworkResponseState.InvalidData()
+            else
+                getHttpError(response.code(), response.message())
+
+        } catch (e: IOException) {
+            NetworkResponseState.NetworkException(e.message!!)
+        }
     }
 
     override fun getMealAndDietType(): Flow<MealAndDietType> {
@@ -138,12 +164,12 @@ class SpooncularRecipesRepository @Inject constructor(
     override suspend fun getFoodRecipeByTitle(title: String): FoodRecipe {
         return cache
             .getFoodRecipeByTitle(title).let {
-                it.foodRecipe.toDomain(it.cuisines, it.extendedIngredients)
+                it.foodRecipe.toDomain(it.cuisines, it.extendedIngredients, it.analyzedInstructions)
             }
     }
 
     override suspend fun saveFavoriteRecipe(foodRecipe: FoodRecipe) {
-        cache.saveFavoriteRecipe( CachedFavoriteFoodRecipe.fromDomain(foodRecipe) )
+        cache.saveFavoriteRecipe(CachedFavoriteFoodRecipe.fromDomain(foodRecipe))
     }
 
     override fun getFavoriteRecipes(): Flowable<List<FoodRecipe>> {
@@ -168,8 +194,50 @@ class SpooncularRecipesRepository @Inject constructor(
         cache.deleteFavoriteRecipeById(title)
     }
 
-    override suspend fun requestFoodJoke(): FoodJoke {
-        return apiFoodJokeMapper.mapTo(api.getRandomJoke())
+    override suspend fun requestFoodJoke(): NetworkResponseState<FoodJoke> {
+        return try {
+            val response = api.getRandomJoke()
+
+            if (response.isSuccessful)
+                if (response.body() != null)
+                    NetworkResponseState.Success(
+                        apiFoodJokeMapper.mapTo(response.body()!!)
+                    )
+                else
+                    NetworkResponseState.InvalidData()
+            else
+                getHttpError(response.code(), response.message())
+
+        } catch (e: IOException) {
+            NetworkResponseState.NetworkException(e.message!!)
+        }
+    }
+
+    private fun <T> getHttpError(code: Int, message: String): NetworkResponseState<T> {
+        return when (code) {
+            401 -> NetworkResponseState.HttpError
+                .InvalidCredentials(message)
+
+            403 -> NetworkResponseState.HttpError
+                .ResourceForbidden(message)
+
+            404 -> NetworkResponseState.HttpError
+                .ResourceNotFound(message)
+
+            500 -> NetworkResponseState.HttpError
+                .InternalServerError(message)
+
+            502 -> NetworkResponseState.HttpError
+                .BadGateWay(message)
+
+            301 -> NetworkResponseState.HttpError
+                .ResourceRemoved(message)
+
+            302 -> NetworkResponseState.HttpError
+                .RemovedResourceFound(message)
+
+            else -> NetworkResponseState.Error(message)
+        }
     }
 
     override suspend fun deleteFoodJoke() {
@@ -183,6 +251,6 @@ class SpooncularRecipesRepository @Inject constructor(
     }
 
     override suspend fun storeFoodJoke(joke: FoodJoke) {
-        cache.storeFoodJoke( CachedFoodJoke.fromDomain(joke) )
+        cache.storeFoodJoke(CachedFoodJoke.fromDomain(joke))
     }
 }
