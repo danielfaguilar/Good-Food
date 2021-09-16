@@ -7,3 +7,5 @@ class NetworkException(message: String): Exception(message)
 class NetworkUnavailableException(message: String = "No network available :c"): IOException(message)
 
 class NoMoreRecipesException(message: String = "No more recipes available :c"): Exception(message)
+
+class HttpCustomException( code: Int, message: String ): Exception( message )
