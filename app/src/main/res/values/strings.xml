@@ -33,6 +33,7 @@
     <string name="title_overview">Overview</string>
     <string name="title_ingredients">Ingredients</string>
     <string name="title_more_details">More Details</string>
+    <string name="title_instructions">Instructions</string>
     <string name="vegetarian">Vegetarian</string>
     <string name="dairy_free">Dairy Free</string>
     <string name="healthy">Healthy</string>
@@ -70,6 +71,7 @@
         <item>@string/title_overview</item>
         <item>@string/title_ingredients</item>
         <item>@string/title_more_details</item>
+        <!--<item>@string/title_instructions</item>-->
     </string-array>
 
 
@@ -96,5 +98,15 @@
     <string name="meal_type_snack" translatable="false">Snack</string>
     <string name="meal_type_drink" translatable="false">Drink</string>
     <!-- End Meal types -->
+
+    <string name="http_error_403">Access to resource is forbidden</string>
+    <string name="http_error_404">Resource not found</string>
+    <string name="http_error_500">Internal server error</string>
+    <string name="http_error_502">Bad Gateway</string>
+    <string name="http_error_301">Access to resource is forbidden</string>
+    <string name="http_error_302">Resource moved, but has been found</string>
+    <string name="invalid_data_error">Invalid data received</string>
+    <string name="network_error">An error occurred with the network</string>
+    <string name="http_error_401">Invalid credentials</string>
 
 </resources>

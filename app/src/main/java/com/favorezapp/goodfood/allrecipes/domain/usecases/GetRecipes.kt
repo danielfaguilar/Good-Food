@@ -6,5 +6,6 @@ import javax.inject.Inject
 class GetRecipes @Inject constructor(
     private val repository: RecipesRepository
 ) {
-    operator fun invoke() = repository.getRecipes().filter { it.isNotEmpty() }
+    operator fun invoke() =
+        repository.getRecipes().filter { it.isNotEmpty() }
 }

@@ -70,5 +70,15 @@
         <item>@string/title_overview</item>
         <item>@string/title_ingredients</item>
         <item>@string/title_more_details</item>
+        <!--<item>@string/title_instructions</item>-->
     </string-array>
+    <string name="title_instructions">Instrucciones</string>
+    <string name="http_error_403">El acceso al recurso está prohibido</string>
+    <string name="http_error_404">Recurso no encontrado</string>
+    <string name="http_error_500">Error de servidor interno</string>
+    <string name="http_error_502">Puerta de enlace incorrecta</string>
+    <string name="http_error_301">El acceso al recurso está prohibido</string>
+    <string name="invalid_data_error">Se recibieron datos no válidos</string>
+    <string name="network_error">Ocurrió un error con la red</string>
+    <string name="http_error_302">Recurso movido, pero se ha encontrado</string>
 </resources>
