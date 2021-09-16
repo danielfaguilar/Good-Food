@@ -7,18 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.favorezapp.goodfood.allrecipes.domain.usecases.GetLocalRecipes
 import com.favorezapp.goodfood.allrecipes.domain.usecases.RequestNextFoodRecipes
 import com.favorezapp.goodfood.allrecipes.domain.usecases.SearchAndGetRecipes
-import com.favorezapp.goodfood.common.domain.model.NetworkException
-import com.favorezapp.goodfood.common.domain.model.NetworkUnavailableException
-import com.favorezapp.goodfood.common.domain.model.NoMoreRecipesException
 import com.favorezapp.goodfood.common.domain.model.foodrecipe.FoodRecipe
+import com.favorezapp.goodfood.common.domain.model.network.NetworkResponseState
+import com.favorezapp.goodfood.common.domain.model.pagination.PaginatedFoodRecipes
 import com.favorezapp.goodfood.common.domain.model.pagination.Pagination
 import com.favorezapp.goodfood.common.presentation.util.Event
 import com.favorezapp.goodfood.common.presentation.model.mappers.UIFoodRecipeMapper
 import com.favorezapp.goodfood.common.utils.DispatchersProvider
-import com.favorezapp.goodfood.common.utils.createExceptionHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -49,13 +46,13 @@ class AllRecipesFragmentViewModel @Inject constructor(
             is AllRecipesEvent.RequestNewRecipes -> { requestNewRecipes() }
             is AllRecipesEvent.OnNetworkStatusChanged -> { updateNetworkStatus( event.netStatus ) }
             is AllRecipesEvent.OnSearchInputSubmit -> { searchQuery( event.query ) }
-            is AllRecipesEvent.RequestLocalRecipes -> { requestLocalRecipes() }
+            is AllRecipesEvent.RequestLocalRecipes -> {
+                requestLocalRecipes()
+            }
         }
 
     private fun requestLocalRecipes() {
-        val exceptionHandler = createExceptionHandler("Error getting local recipes")
-
-        viewModelScope.launch(exceptionHandler) {
+        viewModelScope.launch {
             val recipes =  withContext(dispatchersProvider.io()){
                 getLocalRecipes()
             }
@@ -77,26 +74,20 @@ class AllRecipesFragmentViewModel @Inject constructor(
     }
 
     private fun searchQuery(query: String) {
-        val exceptionHandler = createExceptionHandler("No recipes found for $query")
+        _state.value = state.value!!.copy(
+            loading = true
+        )
 
-        _state.value = state.value!!.updateToLoading()
-
-        viewModelScope.launch(exceptionHandler) {
-            val paginatedRecipes = withContext(dispatchersProvider.io()) {
+        viewModelScope.launch {
+            val networkResponse = withContext(dispatchersProvider.io()) {
                 searchAndGetRecipes( query )
             }
-
-            onNewRecipesList( paginatedRecipes.recipes )
-            onPaginationInfoObtained( paginatedRecipes.pagination )
+            onNetworkResponseObtained( networkResponse )
         }
     }
 
     private fun updateNetworkStatus(netStatus: Boolean) {
         _hasInternetConnection = netStatus
-
-        _state.value = state.value!!.copy(
-            internetConnection = netStatus
-        )
     }
 
     private fun requestNewRecipes() {
@@ -117,15 +108,13 @@ class AllRecipesFragmentViewModel @Inject constructor(
     }
 
     private fun loadNextRecipes() {
-        val exceptionHandler = createExceptionHandler("Error loading recipes")
+        _state.value = state.value!!.copy( loading = true )
 
-        viewModelScope.launch(exceptionHandler) {
-            val paginatedRecipes = withContext(dispatchersProvider.io()) {
+        viewModelScope.launch {
+            val networkResponse = withContext(dispatchersProvider.io()) {
                 requestNextFoodRecipes()
             }
-
-            onNewRecipesList( paginatedRecipes.recipes )
-            onPaginationInfoObtained( paginatedRecipes.pagination )
+            onNetworkResponseObtained( networkResponse )
         }
     }
 
@@ -133,34 +122,69 @@ class AllRecipesFragmentViewModel @Inject constructor(
         numberOfRecipes = pagination.numOfRecipes
     }
 
-    private fun createExceptionHandler(message: String): CoroutineExceptionHandler =
-        viewModelScope.createExceptionHandler(message) { onFailure(it) }
+    private fun onNetworkResponseObtained( response: NetworkResponseState<*> ) {
+        when( response ) {
+            is NetworkResponseState.Error ->
+                onFailureWithMessage( response.message )
 
-    private fun onFailure(failure: Throwable) {
-        when( failure ) {
-            is NetworkException,
-            is NetworkUnavailableException -> {
-                _state.value = state.value!!.copy(
-                    loading = false,
-                    failure = Event(failure)
-                )
+            is NetworkResponseState.HttpError.BadGateWay ->
+                onFailureWithCode( NetworkResponseState.HttpError.BadGateWay.CODE )
+
+            is NetworkResponseState.HttpError.InternalServerError ->
+                onFailureWithCode( NetworkResponseState.HttpError.InternalServerError.CODE )
+
+            is NetworkResponseState.HttpError.RemovedResourceFound ->
+                onFailureWithCode( NetworkResponseState.HttpError.RemovedResourceFound.CODE )
+
+            is NetworkResponseState.HttpError.ResourceForbidden ->
+                onFailureWithCode( NetworkResponseState.HttpError.ResourceForbidden.CODE )
+
+            is NetworkResponseState.HttpError.ResourceNotFound ->
+                onFailureWithCode( NetworkResponseState.HttpError.ResourceNotFound.CODE )
+
+            is NetworkResponseState.HttpError.ResourceRemoved ->
+                onFailureWithCode( NetworkResponseState.HttpError.ResourceRemoved.CODE )
+
+            is NetworkResponseState.InvalidData ->
+                onFailureWithCode( NetworkResponseState.InvalidData.CODE )
+
+            is NetworkResponseState.NetworkException ->
+                onFailureWithCode( NetworkResponseState.NetworkException.CODE )
+
+            is NetworkResponseState.Success -> {
+                val paginatedRecipes = response.result as PaginatedFoodRecipes
+
+                if( paginatedRecipes.recipes.isEmpty() ) {
+                    _state.value = state.value!!.copy(
+                        loading = false,
+                        noMoreRecipes = true,
+                        errorCode = Event( NetworkResponseState.HttpError.ResourceNotFound.CODE )
+                    )
+                    return
+                }
+
+                onNewRecipesList( paginatedRecipes.recipes )
+                onPaginationInfoObtained( paginatedRecipes.pagination )
             }
-            is NoMoreRecipesException -> {
-                _state.value = state.value!!.copy(
-                    loading = false,
-                    failure = Event(failure),
-                    recipes = emptyList(),
-                    noMoreRecipes = true
-                )
-            }
-            else -> {
-                _state.value = state.value!!.copy(
-                    loading = false,
-                    recipes = emptyList(),
-                    failure = Event(failure)
-                )
-            }
+            is NetworkResponseState.HttpError.InvalidCredentials ->
+                onFailureWithCode( NetworkResponseState.HttpError.InvalidCredentials.CODE )
+            else ->
+                onFailureWithCode( NetworkResponseState.Error.CODE )
         }
+    }
+
+    private fun onFailureWithCode(code: Int) {
+        _state.value = state.value!!.copy(
+            loading = false,
+            errorCode = Event(code)
+        )
+    }
+
+    private fun onFailureWithMessage(message: String) {
+        _state.value = state.value!!.copy(
+            loading = false,
+            errorMessage = Event( message )
+        )
     }
 
     override fun onCleared() {

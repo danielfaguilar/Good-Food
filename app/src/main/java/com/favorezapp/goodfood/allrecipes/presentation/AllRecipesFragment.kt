@@ -29,10 +29,13 @@ class AllRecipesFragment : Fragment(), RecipeAdapter.OnRecipeClickListener {
     private val args by navArgs<AllRecipesFragmentArgs>()
     private lateinit var networkListener: NetworkListener
     private var recipes: List<UIFoodRecipe> = emptyList()
+    private var recipeQuery: String = ""
 
     private lateinit var _binding: FragmentAllRecipesBinding
     private val binding: FragmentAllRecipesBinding
         get() = _binding
+
+    private lateinit var searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +81,16 @@ class AllRecipesFragment : Fragment(), RecipeAdapter.OnRecipeClickListener {
     }
 
     private fun setupListeners() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+            if( this::searchView.isInitialized && searchView.query.isNotEmpty() ) {
+                searchView.setQuery("", false)
+                searchView.clearFocus()
+                searchView.isIconified = true
+            }
+            viewModel.onEvent( AllRecipesEvent.RequestNewRecipes )
+        }
+
         binding.floatingActionButton.setOnClickListener {
             if( viewModel.hasInternetConnection )
                 findNavController()
@@ -124,54 +137,56 @@ class AllRecipesFragment : Fragment(), RecipeAdapter.OnRecipeClickListener {
     ) {
         recipes = state.recipes
 
+        binding.shimmerRecyclerView.isVisible = !state.loading
+        binding.shimmerFrameLayout.isVisible = state.loading
+
         if( state.loading ) {
-            binding.shimmerRecyclerView.isVisible = false
+            binding.imageViewNotFound.isVisible = false
+            binding.textViewNotFound.isVisible = false
             binding.shimmerFrameLayout.startShimmer()
         }
+
         else {
-            binding.shimmerRecyclerView.isVisible = true
             binding.shimmerFrameLayout.stopShimmer()
-            adapter.setData(state.recipes)
+            adapter.setData(recipes)
         }
 
-        handleInternetConnection( state.internetConnection )
-        handleNoMoreRecipes( state.noMoreRecipes )
-        handleFailures( state.failure )
+        handleInternetConnection( viewModel.hasInternetConnection )
+        handleFailureWithCode( state.errorCode )
+        handleFailureWithMessage( state.errorMessage )
+    }
+
+    private fun handleFailureWithMessage(errorMessage: Event<String>?) {
+        val unhandledMessage = errorMessage?.getContentIfNotHandled() ?: return
+
+
+    }
+
+    private fun handleFailureWithCode(code: Event<Int>?) {
+        val unhandledCode = code?.getContentIfNotHandled() ?: return
+
+        val message = when( unhandledCode ) {
+            401 -> getString(R.string.http_error_401)
+            403 -> getString(R.string.http_error_403)
+            404 -> getString(R.string.http_error_404)
+            500 -> getString(R.string.http_error_500)
+            502 -> getString(R.string.http_error_502)
+            301 -> getString(R.string.http_error_301)
+            302 -> getString(R.string.http_error_302)
+            0 -> getString(R.string.invalid_data_error)
+            2 -> getString(R.string.network_error)
+            else -> getString(R.string.an_error_occurred)
+        }
+
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+
+        if( recipes.isEmpty() )
+            viewModel.onEvent( AllRecipesEvent.RequestLocalRecipes )
     }
 
     private fun handleInternetConnection(internetConnection: Boolean) {
         if( !internetConnection )
             Snackbar.make(binding.constraintLayout, R.string.no_internet_connection, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun handleFailures(failure: Event<Throwable>?) {
-        if( recipes.isEmpty() )
-            viewModel.onEvent( AllRecipesEvent.RequestLocalRecipes )
-
-        val unhandledFailure = failure?.getContentIfNotHandled() ?: return
-
-        val fallbackMessage = getString(R.string.an_error_occurred)
-
-        val snackBarMessage =
-            if (unhandledFailure.message.isNullOrEmpty())
-                fallbackMessage
-            else unhandledFailure.message!!
-
-        if (snackBarMessage.isNotEmpty())
-            Snackbar.make(requireView(), snackBarMessage, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun handleNoMoreRecipes(noMoreRecipes: Boolean) {
-        if( noMoreRecipes ) {
-            binding.animationNoMoreFood.visibility = View.VISIBLE
-            binding.shimmerRecyclerView.visibility = View.GONE
-        }
-
-        else {
-            binding.animationNoMoreFood.visibility = View.GONE
-            binding.shimmerRecyclerView.visibility = View.VISIBLE
-        }
-
     }
 
     private fun createAdapter(): RecipeAdapter {
@@ -184,7 +199,7 @@ class AllRecipesFragment : Fragment(), RecipeAdapter.OnRecipeClickListener {
         inflater.inflate( R.menu.search_recipes_menu, menu )
 
         val searchItem = menu.findItem(R.id.action_search_recipe)
-        val searchView = searchItem.actionView as? SearchView
+        searchView = searchItem.actionView as SearchView
 
         setupSearchView( searchView )
     }
@@ -195,10 +210,9 @@ class AllRecipesFragment : Fragment(), RecipeAdapter.OnRecipeClickListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
                 if( query?.isNotEmpty() == true && query.length >= 2 ) {
+                    recipeQuery = query
                     viewModel.onEvent(AllRecipesEvent.OnSearchInputSubmit(query))
                     searchView.clearFocus()
-                } else if(query?.isEmpty() == true) {
-                    viewModel.onEvent( AllRecipesEvent.RequestNewRecipes )
                 }
 
                 return true
@@ -208,9 +222,9 @@ class AllRecipesFragment : Fragment(), RecipeAdapter.OnRecipeClickListener {
             }
         } )
         searchView?.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            binding.tvSearching.isVisible = hasFocus
-            binding.ivSearchingRecipe.isVisible = hasFocus
-            binding.shimmerRecyclerView.isVisible = !hasFocus
+            // binding.tvSearching.isVisible = hasFocus
+            // binding.ivSearchingRecipe.isVisible = hasFocus
+            // binding.shimmerRecyclerView.isVisible = !hasFocus
         }
     }
 
