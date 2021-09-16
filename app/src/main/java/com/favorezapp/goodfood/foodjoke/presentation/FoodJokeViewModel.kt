@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.favorezapp.goodfood.common.domain.model.network.NetworkResponseState
 import com.favorezapp.goodfood.common.presentation.util.Event
 import com.favorezapp.goodfood.common.utils.DispatchersProvider
 import com.favorezapp.goodfood.common.utils.createExceptionHandler
@@ -57,15 +58,39 @@ class FoodJokeViewModel @Inject constructor(
             }
 
         viewModelScope.launch( exceptionHandler ) {
-            withContext(dispatchersProvider.io()) {
+            val networkResponse = withContext(dispatchersProvider.io()) {
                 requestNextFoodJoke()
             }
+
+            onNetworkResponseObtained( networkResponse )
+        }
+    }
+
+    private fun onNetworkResponseObtained(response: NetworkResponseState<FoodJoke>) {
+        when( response ) {
+            is NetworkResponseState.Error -> onFailureMessage(response.message)
+            is NetworkResponseState.HttpError.BadGateWay -> onFailureMessage(response.message)
+            is NetworkResponseState.HttpError.InternalServerError -> onFailureMessage(response.message)
+            is NetworkResponseState.HttpError.RemovedResourceFound -> onFailureMessage(response.message)
+            is NetworkResponseState.HttpError.ResourceForbidden -> onFailureMessage(response.message)
+            is NetworkResponseState.HttpError.ResourceNotFound -> onFailureMessage(response.message)
+            is NetworkResponseState.HttpError.ResourceRemoved -> onFailureMessage(response.message)
+            is NetworkResponseState.InvalidData -> onFailureMessage("Invalid data")
+            is NetworkResponseState.NetworkException -> onFailureMessage(response.message)
+            is NetworkResponseState.Success -> { /* Nothing to do if success */ }
         }
     }
 
     private fun onFailure(fail: Throwable) {
         _state.value = state.value!!.copy(
             failure = Event(fail),
+            loading = false
+        )
+    }
+
+    private fun onFailureMessage( failure: String ) {
+        _state.value = state.value!!.copy(
+            failureMessage = Event(failure),
             loading = false
         )
     }
