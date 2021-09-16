@@ -15,6 +15,7 @@ import com.favorezapp.goodfood.common.presentation.model.UIFoodRecipe
 import com.favorezapp.goodfood.common.presentation.model.mappers.UIFoodRecipeMapper
 import com.favorezapp.goodfood.common.utils.DispatchersProvider
 import com.favorezapp.goodfood.common.utils.createExceptionHandler
+import com.favorezapp.logging.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.launch

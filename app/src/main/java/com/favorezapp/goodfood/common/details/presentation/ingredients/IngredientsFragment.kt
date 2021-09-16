@@ -14,7 +14,8 @@ import com.favorezapp.goodfood.common.presentation.model.UIFoodRecipe
 import com.favorezapp.goodfood.databinding.FragmentIngredientsBinding
 
 class IngredientsFragment: Fragment() {
-    private lateinit var _binding: FragmentIngredientsBinding
+    private var _binding: FragmentIngredientsBinding? = null
+    private val binding: FragmentIngredientsBinding get() = _binding!!
     private val viewModel: SharedViewModel by activityViewModels()
     private val ingredientsAdapter: ExtIngredientAdapter = ExtIngredientAdapter()
 
@@ -24,7 +25,7 @@ class IngredientsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
-        return _binding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,9 +51,14 @@ class IngredientsFragment: Fragment() {
     }
 
     private fun setupUI() {
-        _binding.recyclerViewIngredients.apply {
+        binding.recyclerViewIngredients.apply {
             adapter = ingredientsAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

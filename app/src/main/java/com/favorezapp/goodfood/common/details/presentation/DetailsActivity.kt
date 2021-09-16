@@ -11,7 +11,8 @@ import androidx.navigation.navArgs
 import com.favorezapp.goodfood.R
 import com.favorezapp.goodfood.common.details.presentation.adapters.PagerAdapter
 import com.favorezapp.goodfood.common.details.presentation.ingredients.IngredientsFragment
-import com.favorezapp.goodfood.common.details.presentation.instructions.MoreDetailsFragment
+import com.favorezapp.goodfood.common.details.presentation.instructions.InstructionsFragment
+import com.favorezapp.goodfood.common.details.presentation.more_details.MoreDetailsFragment
 import com.favorezapp.goodfood.common.details.presentation.overview.OverviewFragment
 import com.favorezapp.goodfood.common.details.presentation.viewmodels.SharedViewModel
 import com.favorezapp.goodfood.databinding.ActivityDetailsBinding
@@ -68,7 +69,8 @@ class DetailsActivity : AppCompatActivity() {
         return listOf(
             OverviewFragment(),
             IngredientsFragment(),
-            MoreDetailsFragment()
+            MoreDetailsFragment(),
+            /*InstructionsFragment()*/
         )
     }
 
