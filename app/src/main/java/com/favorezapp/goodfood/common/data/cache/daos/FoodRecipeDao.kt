@@ -79,7 +79,16 @@ abstract class FoodRecipeDao {
         deleteCachedCuisines()
         deleteAnalyzedInstructions()
         deleteCachedExtendedIngredient()
+
+        deleteRecipeCuisinesCrossRef()
+        deleteRecipeExtIngredientsCrossRef()
     }
+
+    @Query("DELETE FROM CachedRecipeIngredientCrossRef")
+    abstract fun deleteRecipeExtIngredientsCrossRef()
+
+    @Query("DELETE FROM CachedFoodRecipeCuisineCrossRef")
+    abstract fun deleteRecipeCuisinesCrossRef()
 
     @Query("DELETE FROM analyzed_instruction")
     abstract suspend fun deleteAnalyzedInstructions()
