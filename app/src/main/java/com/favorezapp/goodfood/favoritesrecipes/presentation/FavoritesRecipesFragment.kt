@@ -114,7 +114,7 @@ class FavoritesRecipesFragment : Fragment(),
 
     override fun onRecipeClick(title: String) {
         val action = FavoritesRecipesFragmentDirections
-            .actionFavoritesFoodRecipesFragmentToDetailsActivity(title)
+            .actionFavoritesRecipesFragmentToDetailsActivity(title)
         findNavController().navigate(action)
     }
 
