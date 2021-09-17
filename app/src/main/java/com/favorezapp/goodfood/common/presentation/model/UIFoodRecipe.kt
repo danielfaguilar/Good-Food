@@ -10,6 +10,8 @@ data class UIFoodRecipe(
     val sourceUrl: String,
     val extendedIngredients: List<UiExtendedIngredient>,
 
+    val analyzedInstructions: List<UiInstruction>,
+
     val vegetarian: Boolean,
     val glutenFree: Boolean,
     val dairyFree: Boolean,
